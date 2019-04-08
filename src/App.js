@@ -36,9 +36,10 @@ export default class App extends React.Component {
 
   throttledChangeInformer = () => {
     let canRun = true;
-    return () => {
+    return type => {
       if (!canRun) return;
       canRun = false;
+      console.log("IS HIT", type);
       this.setState({ isHit: true });
       if (this.state.lifeInformer <= 0) {
         this.gameOver();
@@ -79,10 +80,11 @@ export default class App extends React.Component {
       isHit,
       kilometers
     } = this.state;
+    const extraSpeed = Math.floor(kilometers / 10);
     return (
       <div>
         <div className="container">
-          <Road heroState={heroState} />
+          <Road heroState={heroState} extraSpeed={extraSpeed} />
           {gameState === 1 && <div className="informer">{kilometers}</div>}
           <Hero
             isHit={isHit}
@@ -100,6 +102,7 @@ export default class App extends React.Component {
           <TrafficLight
             gameState={gameState}
             heroState={heroState}
+            extraSpeed={extraSpeed}
             onLose={this.loseLife}
             onGameOver={this.gameOver}
           />
@@ -107,6 +110,7 @@ export default class App extends React.Component {
             gameState={gameState}
             heroPos={heroPos}
             heroState={heroState}
+            extraSpeed={extraSpeed}
             onLose={this.loseLife}
             onGameOver={this.gameOver}
           />

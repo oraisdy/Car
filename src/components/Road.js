@@ -1,4 +1,5 @@
 import React from "react";
+import { INITIAL_SPEED } from "../config";
 export default class Road extends React.Component {
   constructor(props) {
     super(props);
@@ -31,7 +32,8 @@ export default class Road extends React.Component {
     requestAnimationFrame(this.mainLoop);
     if (this.props.heroState === 1 && this.roadRef.current) {
       const top = this.roadRef.current.getBoundingClientRect().top;
-      this.roadRef.current.style.top = top + 3 + "px";
+      const speed = INITIAL_SPEED + this.props.extraSpeed;
+      this.roadRef.current.style.top = top + speed + "px";
       if (top >= 0) {
         this.updateCols();
         this.roadRef.current.style.top = "-128px";

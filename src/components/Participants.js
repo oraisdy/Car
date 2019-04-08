@@ -3,7 +3,8 @@ import {
   HERO_CLIENT_Y,
   CLIENT_HEIGHT,
   HERO_HEIGHT,
-  MAX_PAITICIPANTS_NUMBER
+  MAX_PAITICIPANTS_NUMBER,
+  INITIAL_SPEED
 } from "../config";
 // const fps = 30;
 export default class Participants extends React.Component {
@@ -18,18 +19,8 @@ export default class Participants extends React.Component {
 
   componentDidMount() {
     this.trafficLoop();
-    // this.mainLoop();
   }
-  // mainLoop = time => {
-  //   requestAnimationFrame(this.mainLoop);
-  //   if (time - this.lastTime < 1000 / fps) {
-  //     return;
-  //   }
-  //   let realFPS = 1000 / (time - this.lastTime);
-  //   console.log("real fps", realFPS);
-  //   // do something
-  //   this.lastTime = time;
-  // };
+
   trafficLoop = () => {
     const rand = Math.round(Math.random() * 6000) + 1000;
     this.timeout = setTimeout(() => {
@@ -57,7 +48,7 @@ export default class Participants extends React.Component {
 
   onLose = id => {
     this.onFinish(id);
-    this.props.onLose();
+    this.props.onLose("crash");
   };
 
   render() {
@@ -68,6 +59,7 @@ export default class Participants extends React.Component {
         key={pid}
         onFinish={this.onFinish}
         onLose={this.onLose}
+        extraSpeed={this.props.extraSpeed}
         heroPos={this.props.heroPos}
         heroState={this.props.heroState}
       />
@@ -80,7 +72,7 @@ class Car extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      carSpeed: Math.random() * 3 + 3,
+      carSpeed: Math.random() * 2 + 1,
       carPos: Math.floor(Math.random() * 2),
       isHit: false
     };
@@ -101,12 +93,11 @@ class Car extends React.Component {
       this.state.carPos === this.props.heroPos &&
       y >= HERO_CLIENT_Y - HERO_HEIGHT
     ) {
-      // console.log("crash", y, CLIENT_HEIGHT, HERO_CLIENT_Y);
       this.props.onLose(this.props.carId);
     } else {
-      let top = y + this.state.carSpeed;
+      let top = y + this.state.carSpeed + this.props.extraSpeed;
       if (this.props.heroState === 1) {
-        top += 3;
+        top += INITIAL_SPEED;
       }
       this.carRef.current.style.top = top + "px";
       this.animationId = requestAnimationFrame(this.mainLoop);

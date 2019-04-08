@@ -1,45 +1,45 @@
 import React from "react";
-import { getComputedTranslateY } from "../utils";
-import { HERO_CLIENT_Y } from "../config";
-import { setInterval } from "timers";
+import { HERO_CLIENT_Y, INITIAL_SPEED, CLIENT_HEIGHT } from "../config";
 export default class TrafficLight extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       trafficType: 0, // 0绿灯，1红灯，2黄灯
       trafficLightId: 0,
-      isHit: false
+      inScreen: false
     };
     this.trafficLightRef = React.createRef();
     this.intervalId = null;
   }
   componentDidMount() {
     this.trafficLoop();
-    this.intervalId = setInterval(() => {
-      this.mainLoop();
-    }, 10);
+    requestAnimationFrame(this.mainLoop);
     setInterval(() => {
       this.setState({
         trafficType: (this.state.trafficType + 1) % 3
       });
     }, 2000);
   }
-  componentWillUnmount() {
-    clearInterval(this.intervalId);
-  }
+  componentWillUnmount() {}
 
-  mainLoop = () => {
+  mainLoop = time => {
+    requestAnimationFrame(this.mainLoop);
     const { heroState, gameState } = this.props;
-    const { trafficType } = this.state;
+    const { trafficType, trafficLightId } = this.state;
     if (
       gameState === 1 &&
       heroState === 1 &&
-      trafficType !== 0 &&
-      this.trafficLightRef.current &&
-      getComputedTranslateY(this.trafficLightRef.current) >= HERO_CLIENT_Y
+      trafficLightId > 0 &&
+      this.trafficLightRef.current
     ) {
-      this.props.onLose();
-      this.setState({ isHit: true });
+      const top = this.trafficLightRef.current.getBoundingClientRect().top;
+      const speed = INITIAL_SPEED + this.props.extraSpeed;
+      this.trafficLightRef.current.style.top = top + speed + "px";
+      if (top >= CLIENT_HEIGHT) {
+        this.setState({ inScreen: false });
+      } else if (trafficType !== 0 && top >= HERO_CLIENT_Y) {
+        this.props.onLose("traffic light");
+      }
     }
   };
   trafficLoop = () => {
@@ -52,17 +52,18 @@ export default class TrafficLight extends React.Component {
 
   createTraffic = () => {
     const { heroState, gameState } = this.props;
-    if (gameState === 1 && heroState === 1) {
+    const { inScreen } = this.state;
+    if (gameState === 1 && heroState === 1 && !inScreen) {
       this.setState({
         trafficLightId: this.state.trafficLightId + 1,
-        isHit: false
+        inScreen: true
       });
     }
   };
 
   render() {
     const trafficTypes = ["green", "red", "yellow"];
-    const { trafficLightId, trafficType, isHit } = this.state;
+    const { trafficLightId, trafficType } = this.state;
     const { heroState } = this.props;
     return (
       <div
@@ -70,8 +71,7 @@ export default class TrafficLight extends React.Component {
           "trafficlight",
           trafficLightId > 0 ? "" : "hidden",
           heroState === 1 ? "running" : "paused",
-          trafficTypes[trafficType],
-          isHit ? "twinkling" : ""
+          trafficTypes[trafficType]
         ].join(" ")}
         key={trafficLightId}
         ref={this.trafficLightRef}

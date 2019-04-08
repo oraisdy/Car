@@ -69,7 +69,6 @@ $scroll_height: 768px;
 .gameover {
   width: 100%;
   height: 100%;
-  // overflow: hidden;
   position: absolute;
   top: 0;
   left: 0;
@@ -118,18 +117,19 @@ $scroll_height: 768px;
 .road-col-1,
 .road-col-5 {
   width: 12.5vw;
-  // background-color: #a7c9cb;
+  max-width: $max_width / 8;
   background-color: #e0d0ab;
 }
 .road-col-2,
 .road-col-4,
 .road-col-3 {
   width: 25vw;
+  max-width: $max_width / 4;
   background-color: #a7c9cb;
 }
 .road-block {
   height: 128px;
-  max-width: $max_width_col2;
+  max-width: 128px;
   background-size: 128px 128px;
 }
 .road-block-road1 {
@@ -153,26 +153,10 @@ $scroll_height: 768px;
   background: url(../images/tent.png) no-repeat center;
   background-size: 35px;
 }
-
 .road-col-3 {
-  width: 25vw;
-  max-width: $max_width_col2;
   background: url(../images/arrow.png) repeat-y center;
   background-size: 20px;
   background-color: #a7c9cb;
-}
-// .road-col-5 {
-//   width: 12.5vw;
-//   max-width: $max_width_col1;
-//   background: url(../images/tree2.png) repeat-y;
-//   background-size: 100%;
-//   background-color: #a7c9cb;
-// }
-
-@keyframes roadMove {
-  100% {
-    transform: translateY(100vh);
-  }
 }
 
 /* hero */
@@ -221,7 +205,7 @@ $scroll_height: 768px;
 
 /* traffic light */
 .trafficlight {
-  animation: lightMove 4s linear;
+  // animation: lightMove 4s linear;
   width: 36vw;
   max-width: $max_width / 100 * 36;
   height: 60px;
@@ -241,12 +225,12 @@ $scroll_height: 768px;
     background: url("../images/trafficlightyellow.png") no-repeat;
     background-size: $max_width / 100 * 36;
   }
-  &.running {
-    animation-play-state: running;
-  }
-  &.paused {
-    animation-play-state: paused;
-  }
+  // &.running {
+  //   animation-play-state: running;
+  // }
+  // &.paused {
+  //   animation-play-state: paused;
+  // }
   @media (max-width: $max_width) {
     left: 12.5vw;
     width: 36vw;
@@ -258,11 +242,11 @@ $scroll_height: 768px;
   }
 }
 
-@keyframes lightMove {
-  100% {
-    transform: translateY(104vh);
-  }
-}
+// @keyframes lightMove {
+//   100% {
+//     transform: translateY(104vh);
+//   }
+// }
 
 /* participant */
 .car {
