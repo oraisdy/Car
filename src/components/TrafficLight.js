@@ -1,4 +1,7 @@
 import React from "react";
+import red from "../images/trafficlightred.png";
+import yellow from "../images/trafficlightyellow.png";
+import green from "../images/trafficlightgreen.png";
 import { HERO_CLIENT_Y, CLIENT_HEIGHT } from "../config";
 export default class TrafficLight extends React.Component {
   constructor(props) {
@@ -13,7 +16,11 @@ export default class TrafficLight extends React.Component {
     this.intervalId = null;
     this.top = -60;
   }
+
   componentDidMount() {
+    preload(red);
+    preload(green);
+    preload(yellow);
     this.trafficLoop();
     this.animationId = requestAnimationFrame(this.mainLoop);
     this.intervalId = setInterval(() => {
@@ -83,3 +90,8 @@ export default class TrafficLight extends React.Component {
     );
   }
 }
+const preload = src => {
+  let img = new Image();
+  img.src = src;
+  console.log(img);
+};
