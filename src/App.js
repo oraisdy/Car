@@ -27,7 +27,7 @@ export default class App extends React.Component {
   }
   increaseKilometer = () => {
     if (this.state.gameState === 1 && this.state.heroState === 1) {
-      this.setState({ kilometers: this.state.kilometers + 0.2 });
+      this.setState({ kilometers: this.state.kilometers + 0.35 });
     }
   };
 
@@ -36,9 +36,9 @@ export default class App extends React.Component {
     return type => {
       if (!canRun) return;
       canRun = false;
-      console.log("IS HIT", type);
+      // console.log("IS HIT", type);
       this.setState({ isHit: true });
-      if (this.state.lifeInformer <= 0) {
+      if (this.state.lifeInformer <= 1) {
         this.gameOver();
       }
       this.setState({
