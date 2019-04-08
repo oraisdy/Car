@@ -4,6 +4,9 @@ export default class Hero extends React.Component {
   componentDidMount() {
     document.addEventListener("keydown", this.handleKeyDown.bind(this), false);
   }
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.handleKeyDown.bind(this));
+  }
   handleKeyDown(e) {
     const { heroPos, heroState } = this.props;
     e.preventDefault();
@@ -27,16 +30,15 @@ export default class Hero extends React.Component {
   render() {
     const { heroPos, isHit, gameState, lifeInformer } = this.props;
     return (
-      <div>
-        {gameState === 1 && (
-          <div
-            className={`hero ${heroPos === 0 ? "left" : "right"} ${
-              isHit ? "twinkling" : ""
-            }`}
-          >
-            <div className={`life life${lifeInformer}`} />
-          </div>
-        )}
+      <div
+        className={[
+          "hero",
+          heroPos === 0 ? "left" : "right",
+          isHit ? "twinkling" : "",
+          gameState === 1 ? "" : "hidden"
+        ].join(" ")}
+      >
+        <div className={`life life${lifeInformer}`} />
       </div>
     );
   }

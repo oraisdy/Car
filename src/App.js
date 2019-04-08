@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.scss";
+import "./styles/App.scss";
 import Hero from "./components/Hero";
 import Road from "./components/Road";
 import Participants from "./components/Participants";

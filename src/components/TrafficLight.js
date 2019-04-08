@@ -65,20 +65,17 @@ export default class TrafficLight extends React.Component {
     const { trafficLightId, trafficType, isHit } = this.state;
     const { heroState } = this.props;
     return (
-      <div>
-        {trafficLightId > 0 && (
-          <div
-            className={[
-              "trafficlight",
-              heroState === 1 ? "running" : "paused",
-              trafficTypes[trafficType],
-              isHit ? "twinkling" : ""
-            ].join(" ")}
-            key={trafficLightId}
-            ref={this.trafficLightRef}
-          />
-        )}
-      </div>
+      <div
+        className={[
+          "trafficlight",
+          trafficLightId > 0 ? "" : "hidden",
+          heroState === 1 ? "running" : "paused",
+          trafficTypes[trafficType],
+          isHit ? "twinkling" : ""
+        ].join(" ")}
+        key={trafficLightId}
+        ref={this.trafficLightRef}
+      />
     );
   }
 }
