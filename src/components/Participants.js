@@ -3,10 +3,8 @@ import {
   HERO_CLIENT_Y,
   CLIENT_HEIGHT,
   HERO_HEIGHT,
-  MAX_PAITICIPANTS_NUMBER,
-  INITIAL_SPEED
+  MAX_PAITICIPANTS_NUMBER
 } from "../config";
-// const fps = 30;
 export default class Participants extends React.Component {
   constructor(props) {
     super(props);
@@ -14,7 +12,6 @@ export default class Participants extends React.Component {
       participants: [],
       currentCarId: 0
     };
-    this.lastTime = 0;
   }
 
   componentDidMount() {
@@ -60,6 +57,7 @@ export default class Participants extends React.Component {
         onFinish={this.onFinish}
         onLose={this.onLose}
         extraSpeed={this.props.extraSpeed}
+        heroSpeed={this.props.heroSpeed}
         heroPos={this.props.heroPos}
         heroState={this.props.heroState}
       />
@@ -97,7 +95,7 @@ class Car extends React.Component {
     } else {
       let top = y + this.state.carSpeed + this.props.extraSpeed;
       if (this.props.heroState === 1) {
-        top += INITIAL_SPEED;
+        top += this.props.heroSpeed;
       }
       this.carRef.current.style.top = top + "px";
       this.animationId = requestAnimationFrame(this.mainLoop);

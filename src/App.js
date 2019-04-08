@@ -4,7 +4,12 @@ import Hero from "./components/Hero";
 import Road from "./components/Road";
 import Participants from "./components/Participants";
 import TrafficLight from "./components/TrafficLight";
-import { MAX_LIFE_NUMBER, HIT_INTERVAL } from "./config";
+import {
+  MAX_LIFE_NUMBER,
+  HIT_INTERVAL,
+  INITIAL_SPEED,
+  SPEED_UP_TIME
+} from "./config";
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -14,24 +19,16 @@ export default class App extends React.Component {
       heroState: 1, // 0停止，1行驶
       lifeInformer: MAX_LIFE_NUMBER,
       isHit: false,
-      kilometers: 0
+      kilometers: 0,
+      heroSpeed: INITIAL_SPEED
     };
     this.loseLife = this.throttledChangeInformer();
-    this.intervalId = null;
+    this.speedUp = this.throttledChangeSpeed();
   }
-
-  componentDidMount() {
-    this.increseKilometers();
-  }
-  componentWillUnmount() {
-    this.intervalId && clearInterval(this.intervalId);
-  }
-  increseKilometers = () => {
-    this.intervalId = setInterval(() => {
-      if (this.state.gameState === 1 && this.state.heroState === 1) {
-        this.setState({ kilometers: this.state.kilometers + 1 });
-      }
-    }, 2000);
+  increaseKilometer = () => {
+    if (this.state.gameState === 1 && this.state.heroState === 1) {
+      this.setState({ kilometers: this.state.kilometers + 0.2 });
+    }
   };
 
   throttledChangeInformer = () => {
@@ -55,6 +52,18 @@ export default class App extends React.Component {
       }, HIT_INTERVAL);
     };
   };
+  throttledChangeSpeed = () => {
+    let canRun = true;
+    return type => {
+      if (!canRun) return;
+      canRun = false;
+      this.setState({ heroSpeed: this.state.heroSpeed + 3 });
+      setTimeout(() => {
+        canRun = true;
+        this.setState({ heroSpeed: this.state.heroSpeed - 3 });
+      }, SPEED_UP_TIME);
+    };
+  };
   gameOver = () => {
     this.setState({ gameState: 0 });
   };
@@ -71,6 +80,7 @@ export default class App extends React.Component {
       kilometers: 0
     });
   };
+
   render() {
     const {
       gameState,
@@ -78,14 +88,22 @@ export default class App extends React.Component {
       heroPos,
       lifeInformer,
       isHit,
-      kilometers
+      kilometers,
+      heroSpeed
     } = this.state;
     const extraSpeed = Math.floor(kilometers / 10);
     return (
       <div>
         <div className="container">
-          <Road heroState={heroState} extraSpeed={extraSpeed} />
-          {gameState === 1 && <div className="informer">{kilometers}</div>}
+          <Road
+            heroState={heroState}
+            extraSpeed={extraSpeed}
+            heroSpeed={heroSpeed}
+            increaseKilometer={this.increaseKilometer}
+          />
+          {gameState === 1 && (
+            <div className="informer">{Math.floor(kilometers)}</div>
+          )}
           <Hero
             isHit={isHit}
             gameState={gameState}
@@ -98,11 +116,13 @@ export default class App extends React.Component {
             onPosChange={pos => {
               this.setState({ heroPos: pos });
             }}
+            onSpeedUp={this.speedUp}
           />
           <TrafficLight
             gameState={gameState}
             heroState={heroState}
             extraSpeed={extraSpeed}
+            heroSpeed={heroSpeed}
             onLose={this.loseLife}
             onGameOver={this.gameOver}
           />
@@ -111,6 +131,7 @@ export default class App extends React.Component {
             heroPos={heroPos}
             heroState={heroState}
             extraSpeed={extraSpeed}
+            heroSpeed={heroSpeed}
             onLose={this.loseLife}
             onGameOver={this.gameOver}
           />
@@ -120,8 +141,7 @@ export default class App extends React.Component {
           {gameState === 0 && (
             <div className="gameover">
               <ul>
-                {/* <li className="title">游戏结束</li> */}
-                <li>你的成绩：{kilometers} km</li>
+                <li>你的成绩：{Math.floor(kilometers)} km</li>
                 <li onClick={this.restartGame}>
                   <span className="restartgame" />
                 </li>

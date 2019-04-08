@@ -1,6 +1,12 @@
 import React from "react";
-
+import { SPEED_UP_TIME } from "../config";
 export default class Hero extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      upKeyDown: false
+    };
+  }
   componentDidMount() {
     document.addEventListener("keydown", this.handleKeyDown.bind(this), false);
   }
@@ -19,6 +25,14 @@ export default class Hero extends React.Component {
         break;
       case 38: // 上
         this.props.onStateChange(1);
+        if (this.state.upKeyDown) {
+          this.props.onSpeedUp();
+        } else {
+          this.setState({ upKeyDown: true });
+          setTimeout(() => {
+            this.setState({ upKeyDown: false });
+          }, SPEED_UP_TIME);
+        }
         break;
       case 40: // 下
         this.props.onStateChange(0);

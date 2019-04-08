@@ -1,6 +1,4 @@
 $max_width: 480px;
-$max_width_col1: 60px; // 1-eighths
-$max_width_col2: 120px;
 $max_height: 640px;
 $scroll_height: 768px;
 .container {
@@ -83,7 +81,7 @@ $scroll_height: 768px;
     right: 0;
     bottom: 0;
     color: white;
-    width: 150px;
+    width: 220px;
     height: 200px;
     line-height: 40px;
     margin: auto;
@@ -205,7 +203,6 @@ $scroll_height: 768px;
 
 /* traffic light */
 .trafficlight {
-  // animation: lightMove 4s linear;
   width: 36vw;
   max-width: $max_width / 100 * 36;
   height: 60px;
@@ -225,12 +222,6 @@ $scroll_height: 768px;
     background: url("../images/trafficlightyellow.png") no-repeat;
     background-size: $max_width / 100 * 36;
   }
-  // &.running {
-  //   animation-play-state: running;
-  // }
-  // &.paused {
-  //   animation-play-state: paused;
-  // }
   @media (max-width: $max_width) {
     left: 12.5vw;
     width: 36vw;
@@ -241,12 +232,6 @@ $scroll_height: 768px;
     }
   }
 }
-
-// @keyframes lightMove {
-//   100% {
-//     transform: translateY(104vh);
-//   }
-// }
 
 /* participant */
 .car {

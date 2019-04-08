@@ -1,5 +1,5 @@
 import React from "react";
-import { HERO_CLIENT_Y, INITIAL_SPEED, CLIENT_HEIGHT } from "../config";
+import { HERO_CLIENT_Y, CLIENT_HEIGHT } from "../config";
 export default class TrafficLight extends React.Component {
   constructor(props) {
     super(props);
@@ -9,35 +9,34 @@ export default class TrafficLight extends React.Component {
       inScreen: false
     };
     this.trafficLightRef = React.createRef();
+    this.animationId = null;
     this.intervalId = null;
   }
   componentDidMount() {
     this.trafficLoop();
-    requestAnimationFrame(this.mainLoop);
-    setInterval(() => {
+    this.animationId = requestAnimationFrame(this.mainLoop);
+    this.intervalId = setInterval(() => {
       this.setState({
         trafficType: (this.state.trafficType + 1) % 3
       });
     }, 2000);
   }
-  componentWillUnmount() {}
+  componentWillUnmount() {
+    this.intervalId && clearInterval(this.intervalId);
+    this.animationId && cancelAnimationFrame(this.animationId);
+  }
 
   mainLoop = time => {
-    requestAnimationFrame(this.mainLoop);
+    this.animationId = requestAnimationFrame(this.mainLoop);
     const { heroState, gameState } = this.props;
     const { trafficType, trafficLightId } = this.state;
-    if (
-      gameState === 1 &&
-      heroState === 1 &&
-      trafficLightId > 0 &&
-      this.trafficLightRef.current
-    ) {
+    if (heroState === 1 && trafficLightId > 0 && this.trafficLightRef.current) {
       const top = this.trafficLightRef.current.getBoundingClientRect().top;
-      const speed = INITIAL_SPEED + this.props.extraSpeed;
+      const speed = this.props.heroSpeed + this.props.extraSpeed;
       this.trafficLightRef.current.style.top = top + speed + "px";
       if (top >= CLIENT_HEIGHT) {
         this.setState({ inScreen: false });
-      } else if (trafficType !== 0 && top >= HERO_CLIENT_Y) {
+      } else if (gameState === 1 && trafficType !== 0 && top >= HERO_CLIENT_Y) {
         this.props.onLose("traffic light");
       }
     }
