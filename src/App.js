@@ -91,7 +91,7 @@ export default class App extends React.Component {
       kilometers,
       heroSpeed
     } = this.state;
-    const extraSpeed = Math.floor(kilometers / 10);
+    const extraSpeed = Math.floor(kilometers / 7);
     return (
       <div>
         <div className="container">
