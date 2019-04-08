@@ -70,12 +70,13 @@ class Car extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      carSpeed: Math.random() * 2 + 1,
+      carSpeed: Math.random() * 2 + 2,
       carPos: Math.floor(Math.random() * 2),
       isHit: false
     };
     this.carRef = React.createRef();
     this.animationId = null;
+    this.top = -HERO_HEIGHT;
   }
   componentDidMount() {
     this.animationId = requestAnimationFrame(this.mainLoop);
@@ -84,7 +85,7 @@ class Car extends React.Component {
     this.animationId && cancelAnimationFrame(this.animationId);
   }
   mainLoop = () => {
-    const y = this.carRef.current.getBoundingClientRect().top;
+    const y = this.top;
     if (y >= CLIENT_HEIGHT) {
       this.props.onFinish(this.props.carId);
     } else if (
@@ -97,6 +98,7 @@ class Car extends React.Component {
       if (this.props.heroState === 1) {
         top += this.props.heroSpeed;
       }
+      this.top = top;
       this.carRef.current.style.top = top + "px";
       this.animationId = requestAnimationFrame(this.mainLoop);
     }

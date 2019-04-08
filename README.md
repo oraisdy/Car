@@ -1,6 +1,6 @@
 ### 简介
 
-![snapshot](https://raw.githubusercontent.com/oraisdy/Car/master/snapshot.png)
+<img src="https://raw.githubusercontent.com/oraisdy/Car/master/snapshot.png" alt="snapshot" width="400"/>
 
 React 开发的赛车小游戏。左右躲避对面开来的车辆，遵守红绿灯规则，争取更多的里程数。
 

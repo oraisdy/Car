@@ -11,6 +11,7 @@ export default class TrafficLight extends React.Component {
     this.trafficLightRef = React.createRef();
     this.animationId = null;
     this.intervalId = null;
+    this.top = -60;
   }
   componentDidMount() {
     this.trafficLoop();
@@ -31,12 +32,15 @@ export default class TrafficLight extends React.Component {
     const { heroState, gameState } = this.props;
     const { trafficType, trafficLightId } = this.state;
     if (heroState === 1 && trafficLightId > 0 && this.trafficLightRef.current) {
-      const top = this.trafficLightRef.current.getBoundingClientRect().top;
-      const speed = this.props.heroSpeed + this.props.extraSpeed;
-      this.trafficLightRef.current.style.top = top + speed + "px";
-      if (top >= CLIENT_HEIGHT) {
+      this.top += this.props.heroSpeed + this.props.extraSpeed;
+      this.trafficLightRef.current.style.top = this.top + "px";
+      if (this.top >= CLIENT_HEIGHT) {
         this.setState({ inScreen: false });
-      } else if (gameState === 1 && trafficType !== 0 && top >= HERO_CLIENT_Y) {
+      } else if (
+        gameState === 1 &&
+        trafficType !== 0 &&
+        this.top >= HERO_CLIENT_Y
+      ) {
         this.props.onLose("traffic light");
       }
     }
@@ -57,6 +61,7 @@ export default class TrafficLight extends React.Component {
         trafficLightId: this.state.trafficLightId + 1,
         inScreen: true
       });
+      this.top = -60;
     }
   };
 

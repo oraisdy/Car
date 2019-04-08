@@ -21,6 +21,8 @@ export default class Road extends React.Component {
       roadCol4,
       roadCol5
     };
+    this.top = 0;
+    this.lastTime = 0;
     this.roadRef = React.createRef();
   }
   componentDidMount() {
@@ -29,16 +31,21 @@ export default class Road extends React.Component {
 
   mainLoop = time => {
     requestAnimationFrame(this.mainLoop);
+    if (time - this.lastTime < 1000 / 60) {
+      return;
+    }
     if (this.props.heroState === 1 && this.roadRef.current) {
-      const top = this.roadRef.current.getBoundingClientRect().top;
       const speed = this.props.heroSpeed + this.props.extraSpeed;
-      this.roadRef.current.style.top = top + speed + "px";
-      if (top >= 0) {
+      this.top = this.top + speed;
+      this.roadRef.current.style.top = this.top + "px";
+      if (this.top >= 0) {
         this.updateCols();
         this.props.increaseKilometer();
         this.roadRef.current.style.top = "-128px";
+        this.top = -128;
       }
     }
+    this.lastTime = time;
   };
 
   updateCols = () => {

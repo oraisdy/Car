@@ -106,6 +106,7 @@ $scroll_height: 768px;
   left: 0;
   top: 0;
   display: flex;
+  transform: translateZ(0);
 }
 .road-col {
   margin: 0;
@@ -159,7 +160,7 @@ $scroll_height: 768px;
 
 /* hero */
 .hero {
-  background: url(https://s2.ax1x.com/2019/04/02/Ayj4ot.png) no-repeat;
+  background: url(../images/car.png) no-repeat;
   position: absolute;
   bottom: 0;
   z-index: 10;
@@ -235,7 +236,8 @@ $scroll_height: 768px;
 
 /* participant */
 .car {
-  background-image: url(https://s2.ax1x.com/2019/04/02/Ayj4ot.png);
+  background-image: url(../images/car.png);
+  transform: rotate(180deg);
   width: 40px;
   height: 75px;
   position: absolute;
