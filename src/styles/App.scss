@@ -209,7 +209,8 @@ $scroll_height: 768px;
   height: 60px;
   position: absolute;
   z-index: 20;
-  top: -60px;
+  transform: translateY(-60px) translateZ(0);
+  // top: -60px;
   left: 60px;
   &.red {
     background: url("../images/trafficlightred.png") no-repeat;
@@ -242,7 +243,8 @@ $scroll_height: 768px;
   height: 75px;
   position: absolute;
   z-index: 10;
-  top: -75px;
+  // top: -75px;
+  transform: translateY(-75px);
   &.right {
     left: 316px;
   }

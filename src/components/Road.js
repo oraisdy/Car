@@ -29,6 +29,25 @@ export default class Road extends React.Component {
     requestAnimationFrame(this.mainLoop);
   }
 
+  // mainLoop = time => {
+  //   requestAnimationFrame(this.mainLoop);
+  //   if (time - this.lastTime < 1000 / 60) {
+  //     return;
+  //   }
+  //   if (this.props.heroState === 1 && this.roadRef.current) {
+  //     const speed = this.props.heroSpeed + this.props.extraSpeed;
+  //     this.top = this.top + speed;
+  //     this.roadRef.current.style.top = this.top + "px";
+  //     if (this.top >= 0) {
+  //       this.updateCols();
+  //       this.props.increaseKilometer();
+  //       this.roadRef.current.style.top = "-128px";
+  //       this.top = -128;
+  //     }
+  //   }
+  //   this.lastTime = time;
+  // };
+
   mainLoop = time => {
     requestAnimationFrame(this.mainLoop);
     if (time - this.lastTime < 1000 / 60) {
@@ -37,11 +56,13 @@ export default class Road extends React.Component {
     if (this.props.heroState === 1 && this.roadRef.current) {
       const speed = this.props.heroSpeed + this.props.extraSpeed;
       this.top = this.top + speed;
-      this.roadRef.current.style.top = this.top + "px";
+      this.roadRef.current.style.transform =
+        "translateY(" + this.top + "px) translateZ(0)";
       if (this.top >= 0) {
         this.updateCols();
         this.props.increaseKilometer();
-        this.roadRef.current.style.top = "-128px";
+        this.roadRef.current.style.transform =
+          "translateY(-128px) translateZ(0)";
         this.top = -128;
       }
     }

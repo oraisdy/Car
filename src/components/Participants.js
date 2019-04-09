@@ -99,7 +99,9 @@ class Car extends React.Component {
         top += this.props.heroSpeed;
       }
       this.top = top;
-      this.carRef.current.style.top = top + "px";
+      // this.carRef.current.style.top = top + "px";
+      this.carRef.current.style.transform =
+        "translateY(" + top + "px) translateZ(0)";
       this.animationId = requestAnimationFrame(this.mainLoop);
     }
   };

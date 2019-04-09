@@ -40,7 +40,9 @@ export default class TrafficLight extends React.Component {
     const { trafficType, trafficLightId } = this.state;
     if (heroState === 1 && trafficLightId > 0 && this.trafficLightRef.current) {
       this.top += this.props.heroSpeed + this.props.extraSpeed;
-      this.trafficLightRef.current.style.top = this.top + "px";
+      // this.trafficLightRef.current.style.top = this.top + "px";
+      this.trafficLightRef.current.style.transform =
+        "translateY(" + this.top + "px) translateZ(0)";
       if (this.top >= CLIENT_HEIGHT) {
         this.setState({ inScreen: false });
       } else if (
@@ -93,5 +95,4 @@ export default class TrafficLight extends React.Component {
 const preload = src => {
   let img = new Image();
   img.src = src;
-  console.log(img);
 };
